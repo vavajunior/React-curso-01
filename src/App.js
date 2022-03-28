@@ -1,15 +1,33 @@
 import React, { Component } from "react";
-import FormularioCadastro from "./components/FormularioCadastro";
 import ListaNotas from "./components/ListaNotas";
+import FormularioCadastro from "./components/FormularioCadastro";
+import "./assets/App.css";
+import './assets/index.css';
 
 class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      notas: []
+    };
+  }
+
+  criarNota(titulo, descricao) {
+    const item = { titulo, descricao };
+    const novaLista = [...this.state.notas, item];
+    const novoState = {
+      notas: novaLista
+    };
+    this.setState(novoState);
+  }
+
   render() {
     return (
-      <div>
-        <h1>Olá Mundo React</h1>
-        <FormularioCadastro />
-        <ListaNotas />
-      </div>
+      <section className="conteudo">
+        <FormularioCadastro criarNota={this.criarNota.bind(this)} />
+        <ListaNotas notas={this.state.notas} />
+      </section>
     );
   }
 }
