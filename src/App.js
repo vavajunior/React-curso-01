@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ListaNotas from "./components/ListaNotas";
+import ListaCategorias from "./components/ListaCategorias";
 import FormularioCadastro from "./components/FormularioCadastro";
 import "./assets/App.css";
 import './assets/index.css';
@@ -9,7 +10,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      notas: []
+      notas: [],
+      categorias: ["Trabalho", "Leituras"]
     };
   }
 
@@ -22,11 +24,31 @@ class App extends Component {
     this.setState(novoState);
   }
 
+  adicionarCategoria(nomeCategoria) {
+    //utilização de Spread Operator
+    const novaLista = [...this.state.categorias, nomeCategoria];
+    const novoState = { ...this.state, categorias: novaLista };
+    this.setState(novoState);
+  }
+
+  excluirNota(index) {
+    let listaNotas = this.state.notas;
+    listaNotas.splice(index, 1);
+    this.setState({
+      notas: listaNotas
+    });
+  }
+
   render() {
     return (
       <section className="conteudo">
         <FormularioCadastro criarNota={this.criarNota.bind(this)} />
-        <ListaNotas notas={this.state.notas} />
+        <main className="conteudo-principal">
+          <ListaCategorias categorias={this.state.categorias}
+            adicionarCategoria={this.adicionarCategoria.bind(this)} />
+          <ListaNotas notas={this.state.notas}
+            excluirNota={this.excluirNota.bind(this)} />
+        </main>
       </section>
     );
   }
