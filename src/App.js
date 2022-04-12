@@ -4,51 +4,27 @@ import ListaCategorias from "./components/ListaCategorias";
 import FormularioCadastro from "./components/FormularioCadastro";
 import "./assets/App.css";
 import './assets/index.css';
+import Notas from "./models/Notas";
+import Categorias from "./models/Categorias";
 
 class App extends Component {
 
   constructor() {
     super();
-    this.state = {
-      notas: [],
-      categorias: ["Trabalho", "Leituras"]
-    };
-  }
-
-  criarNota(titulo, descricao, categoria) {
-    const item = { titulo, descricao, categoria };
-    const novaLista = [...this.state.notas, item];
-    const novoState = {
-      notas: novaLista
-    };
-    this.setState(novoState);
-  }
-
-  adicionarCategoria(nomeCategoria) {
-    //utilização de Spread Operator
-    const novaLista = [...this.state.categorias, nomeCategoria];
-    const novoState = { ...this.state, categorias: novaLista };
-    this.setState(novoState);
-  }
-
-  excluirNota(index) {
-    let listaNotas = this.state.notas;
-    listaNotas.splice(index, 1);
-    this.setState({
-      notas: listaNotas
-    });
+    this.notas = new Notas();
+    this.categorias = new Categorias();
   }
 
   render() {
     return (
       <section className="conteudo">
-        <FormularioCadastro criarNota={this.criarNota.bind(this)}
-          categorias={this.state.categorias} />
+        <FormularioCadastro categorias={this.categorias}
+          criarNota={this.notas.adicionar.bind(this.notas)} />
         <main className="conteudo-principal">
-          <ListaCategorias categorias={this.state.categorias}
-            adicionarCategoria={this.adicionarCategoria.bind(this)} />
-          <ListaNotas notas={this.state.notas}
-            excluirNota={this.excluirNota.bind(this)} />
+          <ListaCategorias categorias={this.categorias}
+            adicionarCategoria={this.categorias.adicionar.bind(this.categorias)} />
+          <ListaNotas notas={this.notas}
+            excluirNota={this.notas.excluir.bind(this.notas)} />
         </main>
       </section>
     );
